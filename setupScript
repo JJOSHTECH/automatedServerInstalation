@@ -42,29 +42,37 @@ then
         # Set executable Flag for the executable
         chmod +x /usr/local/bin/docker-compose
 else
+        # Source: https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl
+        apt-get install -y libffi-dev libssl-dev
+
+        apt-get install -y python3 python3-pip
+
+        apt-get remove python-configparser
+        
+        pip3 install docker-compose
         # Compile and install Docker-Compose for ARM
         # Script copier from https://www.berthon.eu/2017/getting-docker-compose-on-raspberry-pi-arm-the-easy-way/
 
-        git clone https://github.com/docker/compose.git
+        #git clone https://github.com/docker/compose.git
         
-        cd compose
-        git checkout release
+        #cd compose
+        #git checkout release
         
         # cp -i Dockerfile Dockerfile.armhf
-       # sed -i -e 's/^FROM debian\:/FROM armhf\/debian:/' Dockerfile.armhf
-       # sed -i -e 's/x86_64/armel/g' Dockerfile.armhf
+        #sed -i -e 's/^FROM debian\:/FROM armhf\/debian:/' Dockerfile.armhf
+        #sed -i -e 's/x86_64/armel/g' Dockerfile.armhf
 
         #docker build -t docker-compose:armhf -f Dockerfile.armhf .
-        docker build -t docker-compose:armhf -f Dockerfile .
-        docker run --rm --entrypoint="script/build/linux-entrypoint" -v $(pwd)/dist:/code/dist -v $(pwd)/.git:/code/.git "docker-compose:armhf"
+        #docker build -t docker-compose:armhf -f Dockerfile .
+        #docker run --rm --entrypoint="script/build/linux-entrypoint" -v $(pwd)/dist:/code/dist -v $(pwd)/.git:/code/.git "docker-compose:armhf"
 
-        cp dist/docker-compose-Linux-armv7l /usr/local/bin/docker-compose
-        chown root:root /usr/local/bin/docker-compose
-        chmod 0755 /usr/local/bin/docker-compose
-        docker-compose version
+        #cp dist/docker-compose-Linux-armv7l /usr/local/bin/docker-compose
+        #chown root:root /usr/local/bin/docker-compose
+        #chmod 0755 /usr/local/bin/docker-compose
+        #docker-compose version
 
-        curl -L https://raw.githubusercontent.com/docker/compose/$(docker-compose version --short)/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
+        #curl -L https://raw.githubusercontent.com/docker/compose/$(docker-compose version --short)/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
 
-        cd ..
-        rm -r compose
+        #cd ..
+        #rm -r compose
 fi
